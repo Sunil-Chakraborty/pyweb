@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+     <meta charset="UTF-8">
+     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+	 <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
+
+           <style>
+            * {
+                font-size: 15px;
+            }
+
+            table {
+                table-layout: fixed;
+                width: 100%;
+                border: 1px solid black;
+            }
+
+            table th {
+                text-align: left;
+                padding: 3px;
+                padding-bottom: 0;
+            }
+
+            table td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 3px;
+                padding-bottom: 0;
+            }
+
+           @font-face {
+                font-family: 'Sanskrit_2003';
+                src: url("{% static 'fonts/Sanskrit_2003.ttf' %}") format('truetype');
+            }
+
+            body {
+                font-family: 'Sanskrit_2003';
+            }
+
+            .profile-img {
+                width: 100px; /* Adjust the size as needed */
+                height: 100px; /* Adjust the size as needed */
+                border-radius: 50%; /* Makes the image round */
+                object-fit: cover; /* Ensures the image covers the container */
+                margin-bottom: 10px; /* Spacing below the image */
+            }
+
+
+        </style>
+    </head>
+
+    <body>
+        <table>
+            <tr>
+                <th> Emp_Id </th>
+                <th> Name </th>
+                <th> Email </th>
+                <th> Contact </th>
+            </tr>
+
+            {% comment %} {%for data in record %} {% endcomment %}
+
+           <tr>
+                <td style="width: 10%;"> {{record.eid}} </td>
+                <td sttyle="width: 50%; text-align: left;"> {{record.ename}} </td>
+                <td style="width: 25%;"> {{record.eemail}} </td>
+                <td style="width: 15%;"> {{record.econtact}} </td>
+            </tr>
+
+            {% comment %} {% endfor %} {% endcomment %}
+
+        </table>
+
+        <div>
+            {% if record.prof_image %}
+                <img src="{{ record.prof_image.url }}" alt="Profile Image" class="profile-img"/>
+            {% else %}
+                <div class="no-profile-img">No Image</div>
+            {% endif %}
+             <h4>{{record.ename}}<br>
+             {{record.eemail}}<br>
+             {{record.econtact}}</h4>
+        </div>
+
+    </body>
+</html>

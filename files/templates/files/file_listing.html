@@ -1,0 +1,272 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Listing</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery UI CSS -->
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+   
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+
+
+
+
+    <style>
+        .iframe-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        /* Custom CSS for dark black thead */
+        .table-dark thead th {
+            background-color: #000;
+            color: #fff;
+        }
+        /* Modal Custom Styles */
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            cursor: move; /* Indicate draggable header */
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding: 15px 20px;
+        }
+
+        .highlight-row {
+            background-color: #ffffcc !important;
+        }
+        /* Custom style for video modal */
+        .video-modal {
+            display: none;
+        }
+		
+		 .card-header {
+            background-color: #343a40;
+			text-align : center;			
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 1.25rem;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <a href="{% url 'employee:home' %}" class="btn btn-outline-secondary btn-sm mb-3">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1 class="card-header">File Listing</h1>
+        <table id="files-table" class="display table table-striped table-bordered card-body" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>File Name</th>
+                    <th>Owner</th>
+                    <th>Directory Path</th>
+                    <th>Preview</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                    <tr id="row-{{ file.pk }}">
+                        <td>{{ file.name }}</td>
+                        <td>{{ file.owner }}</td>
+                        <td>
+                            {% if file.directory.get_ancestors %}
+                                {% for ancestor in file.directory.get_ancestors %}
+                                    {{ ancestor.name }} /
+                                {% endfor %}
+                            {% endif %}
+                            {{ file.directory.name }}
+                        </td>
+                        <td>
+                            {% if file.url %}
+                                {% if file.url|endswith:'.mp4' %}
+                                    <button class="btn btn-outline-primary btn-sm open-btn" data-url="{{ file.url }}">Open</button>
+                                {% else %}
+                                    <a href="{{ file.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Open</a>
+                                {% endif %}
+                            {% elif file.file and file.file.url %}
+                                {% if file.file.url|endswith:'.mp4' %}
+                                    <button class="btn btn-outline-primary btn-sm open-btn" data-url="{{ file.file.url }}">Open</button>
+                                {% else %}
+                                    <a href="{{ file.file.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Open</a>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-danger">No file or URL associated</span>
+                            {% endif %} 
+                        </td>
+                        <td>
+                             <!-- Edit Button -->
+                            <button class="btn btn-warning btn-sm edit-btn" data-id="{{ file.pk }}" data-name="{{ file.name }}" data-owner="{{ file.owner }}" data-url="{{ file.url }}"><i class="fa fa-pencil"></i>Edit</button>
+							<a href="{% url 'files:delete_file' file.pk %}" class="btn btn-sm btn-danger" onclick="return confirmDelete();"><i class="fa fa-trash"></i> Delete</a>
+						
+						</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+     <!-- Video Modal -->
+    <div id="videoModal" class="modal fade video-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Video Player</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <video id="videoPlayer" controls width="100%">
+                        <source id="videoSource" src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit File Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" method="post" action="">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="editName">Edit File Name:</label>
+                            <input type="text" id="editName" name="name" class="form-control mb-2" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOwner">Edit Owner:</label>
+                            <input type="text" id="editOwner" name="owner" class="form-control mb-2" required>
+                        </div>
+						<div class="form-group">
+                            <label for="editUrl">Edit Url:</label>
+                            <input type="text" id="editUrl" name="url" class="form-control mb-2" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	<!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Load Bootstrap JS after jQuery -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#files-table').DataTable();
+
+            // Make the modal draggable
+            $('#editModal').draggable({
+                handle: ".modal-header" // Allow dragging by the modal header
+            });
+
+            // Edit button click
+            $('.edit-btn').on('click', function() {
+                const fileId = $(this).data('id');
+                const fileName = $(this).data('name');
+                const fileOwner = $(this).data('owner');
+				const fileUrl = $(this).data('url');
+				
+
+                // Remove highlight from any previously highlighted rows
+                $('tr').removeClass('highlight-row');
+
+                // Highlight the current row
+                $(`#row-${fileId}`).addClass('highlight-row');
+
+                $('#editName').val(fileName);
+                $('#editOwner').val(fileOwner);
+				$('#editUrl').val(fileUrl);
+                $('#editForm').attr('action', `/files/edit_file/${fileId}/`);  // Change this URL as needed
+                $('#editModal').modal('show');
+            });
+
+            // Open button click for video files
+            $('.open-btn').on('click', function() {
+                const videoUrl = $(this).data('url');
+
+                $('#videoSource').attr('src', videoUrl);
+                $('#videoPlayer')[0].load(); // Reload video player to update source
+
+                $('#videoModal').modal('show');
+            });
+
+            // Close modal by clicking the 'Close' button or outside the modal
+            $('.close, .btn-secondary').on('click', function() {
+                $('#editModal').modal('hide');
+                $('#videoModal').modal('hide');
+            });
+        });
+		
+		
+		function confirmDelete() {
+			return confirm('Are you sure you want to delete the file named as');
+		}
+
+    </script>
+
+</body>
+</html>

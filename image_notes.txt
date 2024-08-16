@@ -1,0 +1,40 @@
+
+
+Create the Video with Increased Volume
+
+ffmpeg -loop 1 -i "D:/PyWeb/sunil.png" -i "D:/PyWeb/My recording 10.m4a" -c:v libx264 -preset fast -c:a aac -b:a 192k -filter:a "volume=2.0" -shortest "D:/PyWeb/output_video.mp4"
+
+Explanation:
+Volume Filter: The -filter:a "volume=2.0" option doubles the volume of the audio track. The value 2.0 is a multiplier, where 1.0 is the original volume. To increase the volume, use values greater than 1.0. For example, 1.5 would increase the volume by 50%, and 3.0 would triple the volume.
+-loop 1: This option tells ffmpeg to loop the input image indefinitely.
+-shortest: This ensures the output video ends when the shortest input (in this case, the audio) ends.
+
+
+Using ffmpeg to Resize the Image
+ffmpeg -loop 1 -i "D:/PyWeb/sunil.png" -i "D:/PyWeb/My recording 10.m4a" -vf "scale=100:125" -c:v libx264 -preset fast -c:a aac -b:a 192k -filter:a "volume=2.0" -shortest "D:/PyWeb/output_video.mp4"
+
+Explanation:
+-vf "scale=100:125": This video filter (-vf) scales the input image to 100 pixels wide by 125 pixels tall.
+
+
+
+Using Python with PIL to Resize the Image
+
+resize.py
+from PIL import Image
+
+# Open the image
+image = Image.open("D:/PyWeb/sunil.png")
+
+# Resize the image
+image = image.resize((100, 125), Image.LANCZOS)
+
+# Save the resized image
+image.save("D:/PyWeb/sunil_resized.png")
+
+
+Merging multiple images annd convert into PDF
+marge_images.py
+
+Resizing images:
+resize.py

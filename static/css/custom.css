@@ -1,0 +1,30 @@
+body {
+    background-color: #f7f7f7;
+}
+
+.signup-container {
+    margin-top: 100px;
+    max-width: 500px;
+    padding: 15px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px 0px #0000001a;
+    border-radius: 8px;
+}
+
+.signup-container .form-group {
+    margin-bottom: 20px;
+}
+
+.signup-container .btn-primary {
+    width: 100%;
+}
+
+.signup-header {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.signup-header h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}

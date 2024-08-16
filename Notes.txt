@@ -1,0 +1,99 @@
+Remove the Existing Virtual Environment
+$(myenv)cd ~/CRUD
+deactivate
+rm -rf myenv
+
+Recreate the Virtual Environment
+python3.8 -m venv myenv
+Activate the New Virtual Environment
+source myenv/bin/activate
+
+Navigate to the parent directory of the cloned directory:
+cd /path/to/parent/directory
+cd CRUD
+
+Remove the cloned directory:
+rm -rf cloned_directory_name
+rm -rf CRUD
+
+
+Remove the Non-Empty Directory
+rm -rf /home/sunilc/CRUD
+
+# Activate your virtual environment
+source /home/sunilc/CRUD/myenv/bin/activate
+
+# Install wheel
+pip install wheel
+
+# Upgrade requests to the required version
+pip install requests==2.31.0
+
+# Reinstall problematic packages
+pip install PyPDF3 svglib --no-cache-dir
+
+
+Clear Cache Directory:
+rm -rf ~/.cache/*
+
+Remove IPython Directory (if not using IPython):
+rm -rf ~/.ipython
+
+Check Disk Usage Again:
+du -sh ~/*
+
+Clear Package Cache:
+pip cache purge
+
+# Remove pip cache
+rm -rf ~/.cache/pip
+
+
+You can use the du command to find large directories or files:
+du -ah ~ | sort -rh | head -n 20
+
+
+Remove Old Log Files
+find ~/ -name "*.log" -type f -delete
+
+Remove Unnecessary Dependencies: If you have installed unnecessary packages, 
+you can uninstall them:
+pip freeze | xargs pip uninstall -y
+
+http://jucas.jdvu.ac.in:8000/
+
+
+https://github.com/Sunil-Chakraborty/softnook/blob/master/Wedding/photo/ph2.jpg
+https://raw.githubusercontent.com/Sunil-Chakraborty/softnook/master/Wedding/photo/ph2.jpg
+
+https://raw.githubusercontent.com/Sunil-Chakraborty/softnook/master/Wedding/photo/wed_inv1.mp4
+
+https://raw.githubusercontent.com/Sunil-Chakraborty/softnook/master/Wedding/photo/wed_inv1.mp4
+
+
+https://github.com/Sunil-Chakraborty/softnook/blob/master/Wedding/photo_pdf/merged_images3.pdf
+https://raw.githubusercontent.com/Sunil-Chakraborty/softnook/master/Wedding/photo_pdf/merged_images3.pdf
+
+https://drive.google.com/file/d/1hlo49hVYYwzoLOecQNdhdYKVJI3oaeQu/view?usp=drive_link
+https://drive.google.com/file/d/1daJ1Y3E5CcmLQdxDaBJ6AqpyLwrigQlr/view?usp=drive_link
+https://drive.google.com/file/d/1BM6yxxErLQjSHN0wcyRpdSa3qv1DIwZZ/view?usp=drive_link
+
+
+https://raw.githubusercontent.com/Sunil-Chakraborty/softnook/master/Wedding/photo/merged_image.jpg
+
+https://github.com/Sunil-Chakraborty/softnook/blob/master/Wedding/photo/merged_image.jpg
+
+https://github.com/Sunil-Chakraborty/softnook/blob/master/Wedding/video/VID-20240803-WA0002.mp4
+
+https://raw.githubusercontent.com/Sunil-Chakraborty/softnook/master/Wedding/video/VID-20240803-WA0002.mp4
+
+
+ffmpeg -loop 1 -i "D:/PyWeb/sunil.png" -i "D:/PyWeb/My recording 10.m4a" -c:v libx264 -preset fast -c:a aac -b:a 192k -shortest "D:/PyWeb/output_video.mp4"
+ffmpeg -loop 1 -i "D:/PyWeb/sunil.png" -i "D:/PyWeb/My recording 10.m4a" -c:v libx264 -preset fast -c:a aac -b:a 192k -filter:a "volume=6.0" -shortest "D:/PyWeb/output_video.mp4"
+
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRAdGE4rW4RJ_LeMy2uM0FJKYLAFl8IzHIrIzu61bN6LLKEE-awCUnhxrHQy9awlQ/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+https://docs.google.com/presentation/d/e/2PACX-1vRAdGE4rW4RJ_LeMy2uM0FJKYLAFl8IzHIrIzu61bN6LLKEE-awCUnhxrHQy9awlQ/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRAdGE4rW4RJ_LeMy2uM0FJKYLAFl8IzHIrIzu61bN6LLKEE-awCUnhxrHQy9awlQ/embed?start=true&loop=false&delayms=3000" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

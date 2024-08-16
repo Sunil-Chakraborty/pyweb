@@ -1,0 +1,106 @@
+
+{% extends 'employee/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Records</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .table-responsive {
+            overflow-x: auto;
+    </style>
+
+
+
+</head>
+<body>
+<br>
+<br>
+<div class="container">
+    <form action="{% url 'employee:search' %}" class="search" method="GET">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search" name="keyword">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+    <br>
+    <caption class="font-weight-bold">List of Employees</caption>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-sm">
+            <thead class="thead-dark">
+            <tr>
+                <th>Emp ID</th>
+                <th>Emp Name</th>
+                <th>Emp Email</th>
+                <th>Emp Contact</th>
+                <th>Profile Image</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.eid }}</td>
+                <td>{{ employee.ename }}</td>
+                <td>{{ employee.eemail }}</td>
+                <td>{{ employee.econtact }}</td>
+                <td>
+                    {% if employee.prof_image %}
+                        <img src="{{ employee.prof_image.url }}" alt="Profile Image" style="width: 50px; height: 50px;">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'employee:update' employee.id %}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                    <a href="{% url 'employee:delete' employee.id %}" class="btn btn-sm btn-danger" onclick="return confirmDelete();"><i class="fa fa-trash"></i> Delete</a>
+                    <a href="{% url 'employee:doc' employee.id %}" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-eye"></i> View</a>
+
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div>
+        {% if employees.has_other_pages %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if employees.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{ employees.previous_page_number }}" class="page-link">&laquo; PREV</a>
+                </li>
+                {% endif %}
+                {% if employees.has_next %}
+                <li class="page-item">
+                    <a href="?page={{ employees.next_page_number }}" class="page-link">NEXT &raquo;</a>
+                </li>
+                {% endif %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'employee:showall' %}">All</a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+    <a href="{% url 'employee:emp' %}" class="btn btn-success">Add New Record</a>
+</div>
+
+<script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this record?');
+    }
+</script>
+
+</body>
+</html>
+{% endblock content %}
