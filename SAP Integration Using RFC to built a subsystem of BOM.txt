@@ -1,0 +1,184 @@
+SAP Integration Using RFC (Remote Function Calls) or OData Services:
+
+Steps for RFC Integration:
+
+Step 1: Identify Relevant RFC Function Modules SAP provides a range of RFC function modules for 
+interacting with different modules like SAP MM. Common RFCs used for material management might include:
+
+BAPI_MATERIAL_GET_DETAIL: To fetch material details.
+BAPI_MATERIAL_STOCK_REQ_LIST: To fetch material stock information.
+BAPI_GOODSMVT_CREATE: For goods movement, etc.
+Step 2: RFC Setup in SAP Your SAP Basis team or developer will need to ensure that the relevant RFCs 
+are enabled and configured in SAP. They will also need to expose these functions to external systems.
+
+Step 3: Develop Subsystem RFC Client Use SAP's SAP NetWeaver RFC SDK or Python SAP RFC 
+Connector to call SAP RFCs from your subsystem. Here’s a short example using Python:
+
+from pyrfc import Connection
+
+# SAP RFC connection parameters
+conn_params = {
+    'user': 'SAP_USER',
+    'passwd': 'SAP_PASSWORD',
+    'ashost': 'SAP_HOST',
+    'sysnr': '00',
+    'client': '100',
+    'lang': 'EN'
+}
+
+# Establish connection to SAP
+conn = Connection(**conn_params)
+
+# Call RFC function to get material details
+result = conn.call('BAPI_MATERIAL_GET_DETAIL', MATERIAL='1000012345')
+
+# Extract data from the response
+material_data = result['MATERIAL_GENERAL_DATA']
+print(material_data)
+
+Step 4: Integration You can now integrate this data into your recipe and BOM preparation system. 
+For instance, when a user selects a material, the system can query SAP MM via RFC to get real-time 
+stock availability.
+
+
+
+Integration Using SAP RFC
+Step 1: Set Up Django Project
+Create Django Project: Set up a new Django project or use an existing one.
+
+bash
+Copy code
+django-admin startproject myproject
+cd myproject
+Create Django App: Create an app for handling SAP interactions.
+
+bash
+Copy code
+python manage.py startapp sap_integration
+Install Required Packages: You’ll need a library for SAP RFC. Install pyrfc, a Python library for SAP RFC.
+
+bash
+Copy code
+pip install pyrfc
+Step 2: Configure SAP Connection
+Create Configuration Settings: Add SAP connection settings to settings.py.
+
+python
+Copy code
+# myproject/settings.py
+
+SAP_CONNECTION_PARAMS = {
+    'user': 'SAP_USER',
+    'passwd': 'SAP_PASSWORD',
+    'ashost': 'SAP_HOST',
+    'sysnr': '00',
+    'client': '100',
+    'lang': 'EN'
+}
+Create an SAP Connection Utility:
+
+python
+Copy code
+# sap_integration/utils.py
+
+from pyrfc import Connection
+from django.conf import settings
+
+def get_sap_connection():
+    return Connection(**settings.SAP_CONNECTION_PARAMS)
+Step 3: Implement SAP Data Fetching
+Create a View to Fetch Material Details:
+
+python
+Copy code
+# sap_integration/views.py
+
+from django.http import JsonResponse
+from .utils import get_sap_connection
+
+def get_material_details(request, material_code):
+    conn = get_sap_connection()
+    try:
+        result = conn.call('BAPI_MATERIAL_GET_DETAIL', MATERIAL=material_code)
+        material_data = result.get('MATERIAL_GENERAL_DATA', {})
+        return JsonResponse(material_data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+Add URL Patterns:
+
+python
+Copy code
+# sap_integration/urls.py
+
+from django.urls import path
+from .views import get_material_details
+
+urlpatterns = [
+    path('material/<str:material_code>/', get_material_details, name='get_material_details'),
+]
+Include the App URLs in the Project:
+
+python
+Copy code
+# myproject/urls.py
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('sap/', include('sap_integration.urls')),
+]
+
+
+Integration Using SAP OData
+Step 1: Set Up Django Project
+Follow the same initial steps as above to set up a Django project and create an app.
+
+Install Required Packages: You’ll need the requests library to make HTTP calls.
+
+bash
+Copy code
+pip install requests
+Step 2: Configure OData Service
+Create Configuration Settings: Add OData service settings to settings.py.
+
+python
+Copy code
+# myproject/settings.py
+
+SAP_ODATA_URL = 'https://sap-server/sap/opu/odata/sap/ZMM_MATERIAL_SRV/MaterialSet'
+SAP_ODATA_USER = 'SAP_USER'
+SAP_ODATA_PASS = 'SAP_PASSWORD'
+Create a Utility Function to Fetch Data:
+
+python
+Copy code
+# sap_integration/utils.py
+
+import requests
+from django.conf import settings
+
+def get_material_data(material_code):
+    url = f"{settings.SAP_ODATA_URL}?$filter=Material eq '{material_code}'"
+    response = requests.get(url, auth=(settings.SAP_ODATA_USER, settings.SAP_ODATA_PASS))
+    if response.status_code == 200:
+        return response.json()
+    else:
+        response.raise_for_status()
+Step 3: Implement SAP Data Fetching
+Create a View to Fetch Material Details:
+
+python
+Copy code
+# sap_integration/views.py
+
+from django.http import JsonResponse
+from .utils import get_material_data
+
+def get_material_details(request, material_code):
+    try:
+        material_data = get_material_data(material_code)
+        return JsonResponse(material_data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

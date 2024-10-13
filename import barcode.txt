@@ -1,0 +1,22 @@
+import barcode
+from barcode.writer import ImageWriter
+import os
+
+def save_barcode_image(rm_cd):
+    # Ensure the 'barcodes' directory exists
+    barcode_dir = r'D:\PyWeb\media\barcodes'  # Ensure this is correct
+    if not os.path.exists(barcode_dir):
+        os.makedirs(barcode_dir)
+
+    # Generate the barcode image
+    barcode_class = barcode.get_barcode_class('code128')
+    barcode_obj = barcode_class(str(rm_cd), writer=ImageWriter())
+
+    # Save the barcode image
+    filename = os.path.join(barcode_dir, f'{rm_cd}.png')
+    print(f"Saving barcode to: {filename}")
+    barcode_obj.save(filename)
+
+# Test with 'CE681701' and 'CN2020'
+save_barcode_image('CE681701')
+save_barcode_image('CN2020')

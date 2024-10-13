@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>{% block title %}My Web Application{% endblock %}</title>
+    
+    {% block styles %}
+    <!-- Custom styles can be added here -->
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="border-radius: 20%;filter: sepia(1) hue-rotate(-30deg) saturate(5) brightness(1.2);transform: scale(1.1);box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);">
+            <!-- <img src="{% static 'image/Softnook.png' %}" alt="Softnook" height="30"> -->
+            <img src="{% static 'image/Ajanta_logo.png' %}" alt="Ajanta" height="30">
+		
+		</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'employee:home' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'employee:show' %}">CRUD</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'files:home' %}">Files</a>
+                </li>
+				<li class="nav-item">
+                    <a class="nav-link" href="{% url 'files:file_listing' %}">View Content</a>
+                </li>
+				<li class="nav-item">
+                    <a class="nav-link" href="{% url 'product:recepi_list' %}">Product</a>
+                </li>
+				
+				<li class="nav-item">
+                    <a class="nav-link" href="{% url 'product:generate_labels' %}">Label Print</a>
+                </li>
+				<li class="nav-item">
+                    <a class="nav-link" href="{% url 'product:generate_barcodes' %}" target="_blank">Generate Barcode</a>
+                </li>
+				<li class="nav-item">
+                    <a class="nav-link" href="{% url 'product:mixprod_list' %}">Mixing</a>
+                </li>
+
+				<li class="nav-item">
+                    <a class="nav-link" href="{% url 'sales:sales_invoice_print' invoice_no='INV0002' %}">Invoice Print INV0002</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div style="text-align:center;" class="container">
+            <span  class="text-muted">&copy; Sunil Chakraborty - 2024 My Web Application</span>
+        </div>
+    </footer>
+
+    {% block scripts %}
+    <!-- Custom scripts can be added here -->
+    {% endblock %}
+</body>
+</html>

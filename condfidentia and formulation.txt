@@ -1,0 +1,109 @@
+
+Sub : Codification and formulation
+
+Please readout my following draft  and want to have your  expert  opinion 
+and request to rewrite from your end the subject to present as an executive summary.
+
+
+Yesterday I had a visit to a plant of M/S.Ajanta Shoes Pvt. ltd., Kolkata, 
+manufacturer of footwear product, for review a raw material codification and 
+introducing the same in  the formulation/Recepi card (Recepi Card) which is obviously
+a condfidential document and also a trade secreat of the company.
+
+In view of above I have been appointed as an IT  consultant to implement the project
+in shopfloor maintaing the condfidentiality.
+
+At the outset I want to congract all of the team members and the management of the company
+for arranging a good interactive session and a fruitful discussion as well.
+
+The Company has a good SAP system and it has MM  module but WM and PP  not yet implemented.
+
+Existing /Legacy System vs. my opinion:
+
+
+1. Materials are all kept in a seperate area/cluster having earmarked with a tag of internal code viz. CH117
+ (i.e Zink Oxide).
+
+Issue :
+Description of materials are visible on the face of bag as a label printed by the supplier on the product packet.
+How this can be hide so that a vistor/ other vendor can not see the description of the material and the supplier
+also.
+
+My opinion:  this can not be avoided as becasue the supplier can not suppress their product details along with their
+company name this would become a tax legal issue  while trasporting the material hiding the original descrioption.
+I suggest that you can insist the supplier to use your internal code while preparing P.O material text for delivering
+the material so that Tax Invoice would come with your internal code along with the description of material. 
+
+ Presently I have not seen any  computerised weighing system for checking and controling the incoming materials.
+These are maintained manually.
+
+In SAP UGR(Unchecked GRN) prepared i.e material comes in quarantine stage first after moving matereal from truck
+and susequently the concerned people checked the quality and approved the materail for use . 
+Then this would become a real stock in SAP for consumption.
+
+So far physical stock is concerned how this can be identified seperately inside the same storage location.
+ Answer is not yet given.
+
+Existing practice:
+
+Formulation/Recepi card is being prepared manually hand written  with the following format:
+
+Compound Name :
+Compound Code :
+
+Date of issue:
+
+Raw Material : Presently use as internal code i.e CH117 and soforth.
+weight (Kg) :
+Total Kg./ Batch:
+
+
+As the hard copy of the above Recepi Card is visiable with internal code and the quantity, this is 
+transparent to other people also inside the plant to have the description against the code used
+from RM storage laction where the label is earmarked against each internal code.
+
+In my opinion:  "Raw Material : Presently use as internal code i.e CH117 and soforth" should come in barcode
+image having combination of compound code along with materalcode (maintained in a fixed naming convention say 5 char)
+and the hardcopy of above barcode does not dictate the original internal RM code which is depicting in RM stores rack.
+
+There are 4 group of workers who are delivering the materials to mixing department for compound carrying the same 
+manually handwritten recepi card. this is present practice. If barcode image is introdeced then not possible for above 
+workers to deliver the right material to mixing as the code is not visiable on the face of the card. Wireless barcode scanner
+can not be give as it is not econimical and feasible in shopfloor.
+
+My opinion: this issue can be sorted out by splitting the entire recepi card in to four piece of printing slip having the details of
+original internal code(CH117) inplace of barcode image. This practice can enbale us to avoice 
+showing the entire formulation card to the above group of workers which is very confidential.
+Hard copy of Final recepi card with all composite ingredients will be printed with barcode image in Raw Material  column
+for future reference. One can not decode the barcode image with the assigned internal material code which was used in recepi.
+
+
+Could you please arrange a draft flow diagram of above system.
+
+
+
+One point more . Restructuring of existing internal code :
+their should be maintained a fixed coding convention with the length of chars and the implication as well .
+this area can be revisited again .   
+
+
+
+
+Subject: Proposal for Codification and Confidentiality Enhancement at M/S Ajanta Shoes Pvt. Ltd.
+
+Dear [Director's Name],
+
+I hope this message finds you well.
+
+Following my recent visit to the plant and our productive discussions, I am pleased to submit my proposal regarding the codification of raw materials and the introduction of enhanced confidentiality measures for the Recepi Card. Please find the detailed report attached for your review.
+
+The proposed solution focuses on maintaining trade secret confidentiality while optimizing material handling through structured coding and barcode integration. I believe these changes will significantly improve the efficiency and security of the current process.
+
+I look forward to discussing this proposal with you and your team at your earliest convenience.
+
+Thank you for your time and consideration.
+
+Best regards,
+[Your Full Name]
+IT Consultant
+[Your Contact Information]

@@ -26,9 +26,12 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('employee/', include('employee.urls',  namespace='employee' )),
     path('', RedirectView.as_view(url='accounts/login/', permanent=True)),  # Redirect root URL to login
-    #path('emp/', include('employee.urls', namespace='employee')),  # Add this line to include /emp/ URL
+    path('transaction/', include('transactions.urls',  namespace='transactions')),
     path('files/', include('files.urls',  namespace='files' )),
     path('photos/', include('photo_gallery.urls', namespace='photo_gallery')),
+    path('product/', include('product.urls',  namespace='product' )),
+    path('sales/', include('sales.urls',  namespace='sales' )),
+
 ]
 
 

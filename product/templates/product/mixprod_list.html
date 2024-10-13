@@ -1,0 +1,200 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Production Order</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+	<!-- Include Bootstrap JS and jQuery (if not already included) -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+	
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+	<style>
+
+		input[type=number]::-webkit-inner-spin-button,
+			input[type=number]::-webkit-outer-spin-button {
+				   -webkit-appearance: none;
+				   margin: 0;
+		}
+		.modal-header {
+            background-color: #007bff;
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            cursor: move; /* Indicate draggable header */
+        }
+
+	</style>
+	
+    <script>
+		$(document).ready(function() {
+			// Make all modals with IDs starting with 'editModal' draggable
+			$('div[id^="editModal"]').each(function() {
+				$(this).draggable({
+					handle: ".modal-header" // Allow dragging by the modal header
+				});
+			});
+		});
+	</script>
+	
+</head>
+
+<body>
+
+<h2>Production Orders</h2>
+<table class="table table-bordered">
+    <thead style="vertical-align: top;">
+        <tr>
+            <th style="text-align:left;width:5%;">Prod.No.</th>
+            <th style="text-align:left;width:8%;">Card No</th>
+			<th style="text-align:left;width:10%;">Compound</th>
+            <th>Description</th>
+            <th style="text-align:center;width:10%;">Order Date</th>
+			<th style="text-align:center;width:2%;">UOM</th>
+            <th style="text-align:center;width:10%;">Order Qty.</th>			
+            <th style="text-align:center;width:20%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mixprod in mixprods %}
+        <tr>
+            <td>{{ mixprod.prod_no }}</td>
+            <td>{{ mixprod.card_no.card_no }}</td> 
+			<td>{{ mixprod.card_no.comp_cd }}</td>
+			<td>{{ mixprod.card_no.comp_cd.comp_des }}</td>
+            <td style="text-align:center;">{{ mixprod.prod_dt|date:"d-m-y" }}</td>
+			<td style="text-align:center;">{{ mixprod.card_no.comp_cd.uom }}</td>
+            <td style="text-align:right;">{{ mixprod.qty }}</td>
+            <td>
+                <a href="{% url 'product:mixprod_view' mixprod.id %}" target="_blank" class="btn btn-info">View</a>
+                <!-- Edit Button to trigger the Edit Modal -->
+                <button class="btn btn-warning" data-toggle="modal" data-target="#editModal{{ mixprod.id }}">Edit</button>
+				<!-- <a href="{% url 'product:mixprod_edit' mixprod.id %}" class="btn btn-warning">Edit</a> -->
+				
+                <a href="{% url 'product:mixprod_delete' mixprod.id %}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+		<!-- Edit Modal for this row -->
+			<div class="modal fade" id="editModal{{ mixprod.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ mixprod.id }}" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="editModalLabel{{ mixprod.id }}">Edit Production Order {{ mixprod.prod_no }}</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						
+						<form method="POST" action="{% url 'product:mixprod_edit' mixprod.id %}">
+							{% csrf_token %}
+							
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="prod_no">Production No</label>
+									<input type="text" class="form-control" id="prod_no" name="prod_no" value="{{ mixprod.prod_no }}" required>
+								</div>
+								<div class="form-group">
+									<label for="prod_dt">Production Date</label>
+									<input type="date" class="form-control" id="prod_dt" name="prod_dt" value="{{ mixprod.prod_dt|date:'Y-m-d' }}">
+								</div>
+								<div class="form-group">
+									<label for="card_no">Recepi Card No</label>
+									<select name="card_no" class="form-control" id="card_no">
+										{% for recepi in recepi_queryset %}
+											<option value="{{ recepi.id }}" {% if recepi.id == mixprod.card_no.id %}selected{% endif %}>{{ recepi.card_no }}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="qty">Quantity</label>
+									<input type="number" class="form-control" id="qty" name="qty" step="0.001" value="{{ mixprod.qty }}" required>
+								</div>
+							</div>
+							
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary">Save changes</button>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							</div>
+						</form>
+						
+					</div>
+				</div>
+			</div>
+
+		{% endfor %}
+		
+    </tbody>
+</table>
+
+<!-- Button to Open Modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mixProdModal">
+    Add Production Order!!
+</button>
+
+<!-- Add Modal -->
+<div class="modal fade" id="mixProdModal" tabindex="-1" role="dialog" aria-labelledby="mixProdModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mixProdModalLabel">Add Production Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{% url 'product:mixprod_create' %}">
+				{% csrf_token %}
+				
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="prod_no">Production No</label>
+						<input type="text" class="form-control" id="prod_no" name="prod_no" placeholder="Enter Production No" required>
+					</div>
+					
+					<div class="form-group">
+						<label for="prod_dt">Production Date</label>
+						<input type="date" name="prod_dt" class="form-control" id="prod_dt">
+					</div>
+					
+					<div class="form-group">
+						<label for="card_no">Recepi Card No</label>
+						<select name="card_no" class="form-control" id="card_no">
+							<option value="" disabled selected>Select Card No</option>
+							{% for recepi in recepi_queryset %}
+								<option value="{{ recepi.id }}">{{ recepi.card_no }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					
+					<div class="form-group">
+						<label for="qty">Quantity</label>
+						<input type="number" class="form-control" id="qty" name="qty" step="0.001" required>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+	
+</body>
+</html>
+
+
+{% endblock content %}

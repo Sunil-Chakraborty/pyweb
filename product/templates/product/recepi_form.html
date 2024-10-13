@@ -1,0 +1,15 @@
+{% extends 'employee/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<h2>{{ form.instance.id|yesno:"Edit Recepi,Add Recepi" }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<a href="{% url 'product:recepi_list' %}">Cancel</a>
+
+</html>
+{% endblock content %}

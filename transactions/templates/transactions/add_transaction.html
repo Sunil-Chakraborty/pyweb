@@ -1,0 +1,54 @@
+{% extends 'employee/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Modal Trigger Button -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransactionModal">
+    Add Transaction
+</button>
+
+<!-- Add Transaction Modal -->
+<div id="addTransactionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm" method="post" action="{% url 'transactions:add_transaction' %}">
+                    {% csrf_token %}
+                    <!-- Form fields -->
+                    <div class="form-group">
+                        <label for="addTr">Transaction Type</label>
+                        <input type="text" class="form-control" id="addTr" name="tr" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addName">Name</label>
+                        <input type="text" class="form-control" id="addName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addComment">Comment</label>
+                        <textarea class="form-control" id="addComment" name="comment"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="addAmount">Amount</label>
+                        <input type="number" class="form-control" id="addAmount" name="amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addDate">Date</label>
+                        <input type="date" class="form-control" id="addDate" name="date" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add Transaction</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

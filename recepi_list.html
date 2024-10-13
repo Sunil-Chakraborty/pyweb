@@ -1,0 +1,496 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Records</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery UI CSS -->
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+   
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <style>
+		input[type=number]::-webkit-inner-spin-button, 
+		input[type=number]::-webkit-outer-spin-button { 
+			   -webkit-appearance: none; 
+			   margin: 0; 
+		}
+        .iframe-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        /* Custom CSS for dark black thead */
+        .table-dark thead th {
+            background-color: #000;
+            color: #fff;
+        }
+        /* Modal Custom Styles */
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            cursor: move; /* Indicate draggable header */
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding: 15px 20px;
+        }
+
+        .highlight-row {
+            background-color: #ffffcc !important;
+        }
+        /* Custom style for video modal */
+        .video-modal {
+            display: none;
+        }
+		
+		 .card-header {
+            background-color: #343a40;
+			text-align : center;			
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 1.25rem;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+		.thead-dark tr th {
+            vertical-align: top;
+        }
+		.des{
+		}
+    </style>
+	
+</head>
+<body>
+<br>
+<div class="container">
+	
+	<h2>Recepi List
+	<!-- Button to trigger Add modal -->
+    <button style="float:right;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRecepiModal">
+        Add Recepi
+    </button>
+	
+	</h2>
+	<table id="recepiTable" class="display table table-striped table-bordered card-body" style="width:100%">
+		<thead class="thead-dark">
+			<tr>
+				<th>Comp.<br>Code</th>
+				<th>SAP Code</th>
+				<th>R.M <br>Code</th>
+				<th>SAP Code</th>
+				<th style="width:20%;">Description</th>
+				<th>Grp.Desc</th>
+				<th>UOM</th>
+				<th style="text-align:right;">Quantity</th>
+				<th style="text-align:right;">Rs./Kg.</th>
+				<th style="text-align:center;">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for recepi in recepis %}
+			<tr>
+				<td>{{ recepi.comp_cd.comp_cd }}</td>
+				<td>{{ recepi.comp_cd.sap_cd }}</td>
+				<td>{{ recepi.rm_cd.rm_cd }}</td>
+				<td>{{ recepi.rm_cd.sap_cd }}</td>
+				<td>{{ recepi.rm_cd.rm_des }}</td>
+				<td>{{ recepi.rm_cd.grp_cd.grp_des }}</td>
+				<td style="text-align:center;">{{ recepi.rm_cd.uom }}</td>
+				<td style="text-align:right;">{{ recepi.qty }}</td>
+				<td style="text-align:right;">{{ recepi.rm_cd.rate }}</td>
+				<td style="text-align:center;">
+					<button class="btn btn-warning btn-sm edit-btn" data-id="{{ recepi.id }}" data-compid="{{ recepi.comp_cd.id }}" 
+							data-rmcdid="{{ recepi.rm_cd.id }}"  data-qty="{{ recepi.qty }}"
+							data-date="{{ recepi.created_date }}" data-rmdes="{{ recepi.rm_cd.rm_des }}" data-rmuom="{{ recepi.rm_cd.uom }}">
+							<i class="fa fa-pencil"></i>Edit</button>
+					<a href="{% url 'product:recepi_delete' recepi.id %}">Delete</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<p>Total Qty: <span id="totalQty">0</span></p>
+
+	
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="addRecepiModal" tabindex="-1" role="dialog" aria-labelledby="addRecepiModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRecepiModalLabel">Add Recepi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Recepi Form -->
+                    <form action="{% url 'product:recepi_add' %}" method="post">
+                        {% csrf_token %}
+                        <div class="modal-body">
+								<div class="form-group">
+									<label for="comp_cd">Compound Code</label>
+									<select class="form-control" id="comp_cd" name="comp_cd" required>
+										<option value="" disabled selected>Select Compound</option>
+										<!-- Populate with Compounds -->
+										{% for comp_cd in comp_cds %}
+											
+											<option value="{{ comp_cd.id }}" {% if form.comp_cd.value == comp_cd.id %}selected{% endif %}>{{ comp_cd.comp_cd }}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="rm_cd">Raw Material Code</label>
+									<select class="form-control des" id="rm_cd" name="rm_cd" required>
+										<option value="" disabled selected>Select R.M</option>
+										<!-- Populate with Raw Materials -->
+										{% for rm_cd in rm_cds %}
+										
+										<option value="{{ rm_cd.id }}">{{ rm_cd.rm_cd }}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<!-- The rm_des field (readonly) -->
+								<div class="form-group">
+									<label for="id_rm_des">Description</label>
+									<input type="text" class="form-control" id="id_rm_des" readonly>
+								</div>
+								<div class="form-group">
+									<label for="id_rm_uom">UOM</label>
+									<input type="text" class="form-control" id="id_rm_uom" readonly>
+								</div>								
+								<div class="form-group">
+									<label for="qty">Quantity</label>
+									<input type="number" class="form-control" id="qty" name="qty" step="0.01" required>
+								</div>
+						</div>
+						
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-primary">Add Recepi</button>
+							</div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Recepi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" method="post" action="">
+                        {% csrf_token %}
+                        <div class="modal-body">
+								<div class="form-group">
+									<label for="comp_cd">Compound Code</label>
+									<select class="form-control" id="edit_comp_cd" name="compid" required>
+										<option value="" disabled selected>Select Compound</option>
+										<!-- Populate with Compounds -->
+										{% for comp_cd in comp_cds %}											
+											<option value="{{ comp_cd.id }}" {% if form.comp_cd.value == comp_cd.id %}selected{% endif %}>{{ comp_cd.comp_cd }}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="edit_rm_cd">Raw Material Code</label>
+									<select class="form-control des" id="edit_rm_cd" name="rmcdid" required>
+										<option value="" disabled selected>Select R.M</option>
+										
+										<!-- Populate with Raw Materials -->
+										{% for rm_cd in rm_cds %}
+										
+										<
+										<option value="{{ rm_cd.id }}" data-uom="{{ rm_cd.uom }}">{{ rm_cd.rm_cd }}</option>
+										
+										{% endfor %}
+									</select>
+								</div>
+								<!-- The rm_des field (readonly) -->
+								<div class="form-group">
+									<label for="rm_des">Description</label>
+									<input type="text" class="form-control des" id="rm_des" readonly>
+								</div>
+								<!-- The rm_uom field (readonly) -->
+								<div class="form-group">
+									<label for="rm_uom">UOM</label>
+									<input type="text" class="form-control des" id="rm_uom" readonly>
+								</div>
+								<div class="form-group">
+									<label for="qty">Quantity</label>
+									<input type="number" class="form-control" id="edit_qty" name="qty" step="0.01" required>
+								</div>
+								<div class="form-group">
+									<input type="hidden" class="form-control" id="edit_created_date" name="created_date" required>
+								</div>
+						
+						</div>
+						
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-primary">Save Changes</button>
+							</div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	
+</div>
+
+	<!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Load Bootstrap JS after jQuery -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+	<!-- DataTables Buttons JS -->
+	<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+	<!-- JSZip for XLSX export -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<!-- PDFMake for PDF export -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+	<!-- Buttons HTML5 export -->
+	<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+	<!-- Buttons Print export -->
+	<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+		
+
+	
+	<script>
+		$(document).ready(function() {
+			
+			$('.des').change(function() {
+				var selectedRmCd = $(this).val();
+				var description = '';
+				var uom = '';
+
+				{% for rm_cd in rm_cds %}
+				if (selectedRmCd == '{{ rm_cd.id }}') {
+					description = '{{ rm_cd.rm_des }}';
+					uom 		= '{{ rm_cd.uom }}';
+				}
+				{% endfor %}
+
+				$('#id_rm_des').val(description);
+				$('#id_rm_uom').val(uom);
+				
+				$('#rm_des').val(description);
+				$('#rm_uom').val(uom);
+			});
+			
+			
+			 // Make the modal draggable
+            $('#addRecepiModal').draggable({
+                handle: ".modal-header" // Allow dragging by the modal header
+            });
+			
+			// Make the modal draggable
+            $('#editModal').draggable({
+                handle: ".modal-header" // Allow dragging by the modal header
+            });
+							
+			// Edit button click
+			
+            //$('.edit-btn').on('click', function() {
+			$(document).on('click', '.edit-btn', function() {		
+				var recepi_id = $(this).data('id');
+                var comp_cd_id = $(this).data('compid');
+                var rm_cd_id = $(this).data('rmcdid');				
+				var qty  = $(this).data('qty');
+				var des = $(this).data('rmdes');
+				var uom = $(this).data('rmuom');
+				var created_date = $(this).data('date'); // Directly use the date from the data attribute
+				console.log('Description:', des);
+				console.log('UOM:', uom);
+				console.log('id:', recepi_id);
+                // Remove highlight from any previously highlighted rows
+                $('tr').removeClass('highlight-row');
+
+                // Highlight the current row
+                $(`#row-${recepi_id}`).addClass('highlight-row');
+				
+				$('#edit_comp_cd').val(comp_cd_id);
+                $('#edit_rm_cd').val(rm_cd_id);                
+				$('#edit_qty').val(qty);
+				$('#rm_des').val(des);
+				$('#rm_uom').val(uom);
+				$('#edit_created_date').val(created_date); // Pass the date to the form
+
+				
+                $('#editForm').attr('action', `/product/recepi/edit/${recepi_id}/`);
+
+				$('#editModal').modal('show');
+            });
+
+            
+
+            // Close modal by clicking the 'Close' button or outside the modal
+            $('.close, .btn-secondary').on('click', function() {
+                $('#editModal').modal('hide');
+                
+            });
+
+			
+		});
+		
+		var table = $('#recepiTable').DataTable({			
+					dom: 'Blfrtip',   // This is where the export buttons are enabled
+					
+					buttons: [
+						{
+							extend: 'copy',
+							exportOptions: {
+								columns: ':not(:last-child)' // This will exclude the last column (Action) from exporting
+							}
+						},
+						{
+							extend: 'csv',
+							exportOptions: {
+								columns: ':not(:last-child)'
+							}
+						},
+						{
+							extend: 'excel',
+							exportOptions: {
+								columns: ':not(:last-child)'
+							}
+						},
+						{
+							extend: 'pdf',
+							exportOptions: {
+								columns: ':not(:last-child)'
+							},
+						}	
+       
+					],
+					
+					lengthMenu: [[4,10,25, 50, -1], [4,10,25, 50, "All"]],
+					paging: true
+					
+		});
+		
+		// Retrieve the search term from localStorage, if it exists
+		var savedSearch = localStorage.getItem('searchText');
+		if (savedSearch) {
+			table.search(savedSearch).draw(); // Apply saved search filter
+			$('#searchInput').val(savedSearch); // Set the input field to the saved value
+		}
+
+		// Store the search term in localStorage when the user types in the search box
+		$('#recepiTable_filter input').on('keyup', function() {
+			var searchTerm = table.search(this.value).draw(); // Apply the search
+			localStorage.setItem('searchText', this.value); // Save the search term
+		});
+
+		// Manually clear the search and the stored text
+		$('#clearSearch').on('click', function() {
+			table.search('').draw(); // Clear DataTable search
+			$('#searchInput').val(''); // Clear the input field
+			localStorage.removeItem('searchText'); // Clear localStorage
+		});
+		
+		// Function to update the summary
+		function updateSummary() {
+			var total = 0;
+			
+			// Iterate over each row in the current view (filtered rows)
+			table.rows({ filter: 'applied' }).every(function(rowIdx, tableLoop, rowLoop) {
+				var data = this.data();
+				total += parseFloat(data[7]) || 0; // Assuming Qty is the 8th column (index 7)
+			});
+
+			// Update the summary element
+			$('#totalQty').text(total.toFixed(2));
+		};
+
+		// Trigger the summary update on each search event
+		table.on('search.dt', function() {
+			updateSummary();
+		});
+
+		// Initial summary calculation
+		updateSummary();
+		
+		
+		// Capture filtered data on search event
+		$('#recepiTable').on('search.dt', function() {
+			var filteredData = table.rows({ filter: 'applied' }).data().toArray(); // Get filtered rows
+
+			// Send data to the server to generate the PDF
+			$.ajax({
+				url: '/product/generate_pdf/', // URL for generating the PDF
+				
+				method: 'POST',
+				data: JSON.stringify({ data: filteredData }), // Send filtered data
+				contentType: 'application/json',
+				success: function(response) {
+					// Optionally, handle the success response
+					console.log('PDF generated');
+				},
+				error: function(xhr, status, error) {
+					console.error('Error generating PDF:', error);
+				}
+			});
+		});
+		
+		
+	</script>
+
+</body>
+</html>
+
+
+{% endblock content %}
+

@@ -13,11 +13,23 @@ rm -rf CRUD
 https://www.pythonanywhere.com/tarpit
 source myenv/bin/activate
 
+https://sayantani.pythonanywhere.com/static/image/Softnook.png
 
 user name : sunilc
 pwd : Sunilc@59
 sunilc.pythonanywhere.com.
+python --version 3.8.10
+django-admin --version 4.10
 
+
+
+user name : sayantani
+pwd : Hiitsme!1
+sayantani.pythonanywhere.com
+/home/sayantani/venv
+python3.8 -m venv venv
+source venv/bin/activate
+rm -rf venv
 
 to view source code script
 cat system.py
@@ -49,6 +61,9 @@ rm -rf /tmp/*
 Verify the disk usage:
 du -sh ~/*
 
+echo $PYTHONPATH
+(venv) 12:36 ~/myproj $ cd ..
+(venv) 12:36 ~ $ export PYTHONPATH=/home/sayantani/
 
 # Install wheel
 pip install wheel
@@ -64,6 +79,17 @@ If you have the same issue with other apps, like accounts, you can do the same s
 python manage.py migrate accounts zero --fake
 python manage.py migrate accounts 0001_initial --fake
 python manage.py migrate accounts
+
+Reset Migrations (Optional)
+If you still encounter issues and are in a development environment where you can reset migrations:
+
+Delete Migration Files: Remove all migration files in the product/migrations/ directory except for __init__.py.
+
+Delete Migration Records: Remove migration records from the django_migrations table for the product app:
+
+sql
+Copy code
+DELETE FROM django_migrations WHERE app = 'product';
 
 
  Using Django Shell for Drop Existing Tables in bash
@@ -135,8 +161,21 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vSv5cj2bnpJtAWxdHpZEXmVfDgyDfk76
 
 
 
+from console:
+cd /home/sayantani
+python3 -m venv venv
+source myenv/bin/activate
 
 
+contact person:
+Ajanta Shoe :
+1. Souvik      : 9830889702 - Purchase
+2. Rahul        : 9830106494  - IT
+3. Chandan  : 9674166793  - Technical
+4. Abhisek    : 8447751151 - IT
+    Bharadwaj 
+
+1. Joydev Chatterjee : 9830227556 - Director
 
 
 

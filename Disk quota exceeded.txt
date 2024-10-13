@@ -1,0 +1,33 @@
+To resolve the "Disk quota exceeded" error on PythonAnywhere:
+
+Check Disk Usage in the Bash console:
+du -h --max-depth=1
+
+Remove Temp Files:
+rm -rf /tmp/*
+
+Remove Cached Files:
+pip cache purge
+
+for above upgrade pip by:
+pip install --upgrade pip
+
+Find Large Files:
+find . -type f -exec du -h {} + | sort -rh | head -n 20
+
+Delete Logs:
+rm ~/.logs/*
+
+Uninstall Unnecessary Packages:
+pip uninstall package_name
+
+Remove Old Virtual Environments, if necessary:
+rm -rf ~/myenv  # Replace 'myenv' with the name of the virtual environment you want to remove
+
+
+If you don't need Git :
+rm -rf .git
+
+If you still need Git but want to reduce the size of the .git folder,
+git gc --prune=now
+

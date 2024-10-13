@@ -1,0 +1,13 @@
+http://jucas.jdvu.ac.in:8000/
+https://chat.openai.com/auth/login
+
+https://sunilc.pythonanywhere.com/accounts/login/
+https://www.pythonanywhere.com/login/
+
+Pythonanywhere - Webhosting
+https://sunilc.pythonanywhere.com
+
+https://www.pythonanywhere.com/login/
+user name : sunilc
+pwd : Sunilc@59
+sunilc.pythonanywhere.com.

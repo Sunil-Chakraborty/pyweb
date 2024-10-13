@@ -1,0 +1,177 @@
+Open Git Bash.
+Change the current working directory to your local project.
+Initialize the local directory as a Git repository.
+$ git init -b main
+Add the files in your new local repository. 
+This stages them for the first commit.
+$ git add .
+# Adds the files in the local repository and stages them for commit. 
+To unstage a file, use 'git reset HEAD YOUR-FILE'.
+
+Commit the files that you've staged in your local repository.
+$ git commit -m "First commit"
+# Commits the tracked changes and prepares
+them to be pushed to a remote repository. To remove this commit and modify the file, use 'git reset --soft HEAD~1' and commit and add the file again.
+At the top of your repository on GitHub.com's Quick Setup page, click  to copy the remote repository URL.
+Copy remote repository URL field
+In the Command prompt, add the URL for the remote repository where your local repository will be pushed.
+
+$ 
+
+# Sets the new remote
+
+$ git remote -v
+# Verifies the new remote URL
+Push the changes in your local repository to GitHub.com.
+
+$ git push origin main
+# Pushes the changes in your local repository up to the remote repository you spe
+
+
+Pushing sources to existing github repository (master)
+git init
+git add .
+git status
+git commit -m 'view My Profile 080122'
+git remote add origin https://github.com/Sunil-Chakraborty/JU_AMS.git
+git push -f origin master
+git push -u origin master --force  
+
+
+https://github.com/Sunil-Chakraborty/JU_CAS.git
+https://github.com/Sunil-Chakraborty/pyweb.git
+git remote add origin https://github.com/Sunil-Chakraborty/pyweb.git
+
+echo "# pyweb" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Sunil-Chakraborty/pyweb.git
+git push -u origin main
+
+
+
+
+
+
+
+
+
+
+
+git addPushing data in new repository.
+Go inside folder in Gitbash and issue the followings:
+git init
+git add .
+git status
+git commit -m "first commit"
+git remote add origin https://github.com/Sunil-Chakraborty/JU_AMS.git
+git push -u origin master
+
+
+create a new repository on the command line
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Sunil-Chakraborty/testProject.git
+https://github.com/Sunil-Chakraborty/pyweb.git
+
+git push -u origin main
+
+
+https://github.com/Sunil-Chakraborty/faculty.git
+https://github.com/Sunil-Chakraborty/JU_AMS.git
+
+.gitignore
+.DS_Store
+*.pyc
+
+git status
+git add -A
+git commit -m "Store and Carts functionality upto course 59"
+git push origin main
+
+
+
+www.git-scm.com
+Your Identity
+$ git config --global user.name "Sunil"
+$ git config --global user.email to.sunilc@gmail.com
+
+Git bash
+cd d:
+cd greatkart
+source /d/greatkart/env/scripts/activate
+source /d/greatkart/env/scripts/deactivate
+
+New repository in github.com
+greatkart-django
+
+
+
+Reinitialistion of git
+rm -rf .git
+initialise git
+git init
+
+https://github.com/Sunil-Chakraborty/
+https://github.com/Sunil-Chakraborty/test-project.git
+to run git bash:
+source myenv/scripts/activate
+
+Process to push via git bash
+git status
+git add -A
+git commit -m "Store and Carts functionality upto course 59"
+git push origin main
+
+To check :
+https://github.com/Sunil-Chakraborty/greatkart-django.git
+
+Faculty git link
+https://github.com/dev-rathankumar/greatkart-course
+
+https://github.com/Sunil-Chakraborty/JU_CAS2
+
+
+D:\node_react\my-app>
+git init
+git remote add origin https://github.com/Sunil-Chakraborty/react-app.git
+git remote add origin https://github.com/Sunil-Chakraborty/CRUD.git
+git add .
+git commit -m "First Update"
+git push -u origin master
+if fails
+git branch
+show branch
+git push -u origin master --force
+
+d:
+git clone https://github.com/Sunil-Chakraborty/react-app.git
+git clone --branch master https://github.com/Sunil-Chakraborty/react-app.git
+git clone --branch master https://github.com/Sunil-Chakraborty/CRUD.git
+cd react-app
+dir
+cd first-app
+npm install
+npm start
+
+after clone want to remove :
+D:\>rmdir /s /q react-app
+
+ http://192.168.132.120:3000/
+ http://192.168.132.120:3000/
+local ip address: ipconfig  192.168.132.120
+
+http://192.168.190.120:8000/
+
+http://127.0.0.1:8000/
+192.168.190.120
+
+
+
+
+
+

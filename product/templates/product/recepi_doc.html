@@ -1,0 +1,104 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepi Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Page break before every .header when printing */
+        @media print {
+            .page-break {
+                page-break-before: always;
+            }
+            .footer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Start the page with the header for the report -->
+    <div class="page-break"></div>
+    <div class="header">
+        <h3>Compound Recepi Report</h3>
+        <h5>Comp. Code: {{ compound_code }} | SAP Code: {{ sap_code }}</h5>
+    </div>
+
+    <!-- Table for report data -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>                
+                <th>R.M Code</th>
+                <th>SAP Code</th>
+                <th style="text-align:left;">Description</th>
+                <th>Group Desc</th>
+                <th>UOM</th>
+                <th>Quantity</th>
+                <th>Rs./Kg.</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>                
+                <td>{{ row.rm_code }}</td>
+                <td>{{ row.sap_rm_code }}</td>
+                <td style="text-align:left;">{{ row.description }}</td>
+                <td>{{ row.group_desc }}</td>
+                <td>{{ row.uom }}</td>
+                <td style="text-align:right;">{{ row.quantity }}</td>
+                <td style="text-align:right;">{{ row.rs_per_kg }}</td>
+                <td style="text-align:right;">{{ row.amount }}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight:bold;">                
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td style="text-align:right;">{{ total_qty }}</td>
+                <td></td>
+                <td style="text-align:right;">{{ total_amt }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Script for printing -->
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+    </script>
+
+</body>
+</html>
+
+{% endblock content %}

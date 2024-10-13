@@ -1,0 +1,164 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">    
+	<title>{% block title %}Production Order Details{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Bootstrap JS and jQuery (if not already included) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        @media print {
+            /* Basic Styles */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                color: black;
+            }
+            button, .no-print {
+                display: none;
+            }
+			h2{
+				font-size:25px;
+				font-weight:bold;
+			}
+            /* Table Styles */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            thead {
+                display: table-header-group;
+            }
+            tfoot {
+                display: table-row-group;
+                page-break-inside: avoid;
+            }
+            th, td {
+                border: 1px solid #000;
+                padding: 8px;
+                font-size: 20px;
+                font-weight: bold;
+                text-align: left;
+            }
+
+           /* Page Footer with Page Numbers */
+            #page-footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+
+            /* Ensuring the printed pages get counted */
+            .printed-page {
+                counter-increment: page;
+            }
+			
+			footer {
+				display: none;
+			}
+			
+        }
+		div h4 {
+		   font-size:15px;
+		   font-weight:bold;
+		   
+		}
+    </style>
+</head>
+<body>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="5" ><h2>Production Order Details for Card No: {{ mixprod.card_no }} - {{ mixprod.qty }}</h2></th>
+        </tr>
+        <tr>
+            <th class="no-print">RM Code</th>
+            <th style="width:10%;" class="no-print">Description</th>
+            <th style="width:50%;">Barcode</th>
+            <th style="text-align:right;" class="no-print">Recepi Qty (kg)</th>
+            <th style="text-align:right;">Production Qty(kg)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in proportionate_quantities %}
+        <tr class="printed-page">
+            <td class="no-print">{{ item.rm_cd }}</td>
+            <td class="no-print">{{ item.rm_des }}</td>
+			<td style="text-align:left;"><img src="data:image/png;base64,{{ item.barcode_data }}" alt="Barcode" class="barcode-img" data-toggle="tooltip" data-placement="top" title="{{ item.rm_cd }} - {{ item.rm_des }}" style="width: 600px; height: 100px;" /></td>
+            
+            <td style="text-align:right;" class="no-print">{{ item.recepi_qty }}</td>
+            <td style="text-align:right;">{{ item.proportionate_qty|floatformat:3 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td><strong>Total</strong></td>
+            <td class="no-print"></td>
+            <td class="no-print"></td>
+            <td style="text-align:right;" class="no-print"><strong>{{ total_recepi_qty|floatformat:3 }}</strong></td>
+            <td style="text-align:right;"><strong>{{ total_proportionate_qty|floatformat:3 }}</strong></td>
+        
+		</tr>
+    </tfoot>
+	
+</table>
+
+
+<div id="page-footer" class="print-footer" >Page <span id="currentPage"></span> of <span id="totalPages"></span></div>
+
+<script>
+    window.onload = function() {
+        function updatePageNumbers() {
+            let printedPages = document.querySelectorAll('.printed-page');
+            let itemsPerPage = 10;  // Number of items per page
+            let totalPages = Math.ceil(printedPages.length / itemsPerPage);
+
+            // Set the total number of pages in the footer
+            document.getElementById('totalPages').textContent = totalPages;
+
+            // Clear existing footers to avoid duplicates
+            let existingFooters = document.querySelectorAll('.print-footer');
+            existingFooters.forEach(footer => footer.remove());
+
+            for (let i = 0; i < totalPages; i++) {
+                // Create a new footer for each page
+                let newFooter = document.createElement('div');
+                newFooter.classList.add('print-footer');
+                newFooter.innerHTML = `<h4 colspan="3">Page ${i + 1} of ${totalPages}</h4>`; // Set current page
+
+                // Insert the footer after the last printed item for that page
+                let startIndex = i * itemsPerPage;
+                let endIndex = Math.min(startIndex + itemsPerPage, printedPages.length);
+
+                if (endIndex > startIndex) {
+                    printedPages[endIndex - 1].after(newFooter);
+                }
+            }
+        }
+
+        updatePageNumbers();  // Calculate page numbers before print
+        window.print(); // Open print dialog
+    };
+</script>
+
+
+
+</body>
+</html>
+{% endblock %}

@@ -43,8 +43,6 @@ def show(request):
     }
     return render(request,"employee/show.html",context)
 
-    # return render(request,"show.html",{'employees':employees})
-
 def showall(request):
     employees = Employee.objects.all().order_by('id')
     return render(request,"employee/show.html",{'employees':employees})
@@ -88,7 +86,7 @@ def search(request):
     return render(request,'employee/show.html',context)
 
 def doc(request,id):
-    template_name = "pdf.html"
+    template_name = "employee/pdf.html"
     records = Employee.objects.get(id=id)
 
     return render_to_pdf(

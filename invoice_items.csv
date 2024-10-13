@@ -1,0 +1,5 @@
+invoice,product,quantity,rate,total
+INV0001,Laptop,2,1000.0,2000.0
+INV0001,Smartphone,1,500.0,500.0
+INV0002,Smartphone,2,500.0,1000.0
+INV0002,Headphones,3,100.0,300.0

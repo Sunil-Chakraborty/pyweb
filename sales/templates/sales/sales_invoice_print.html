@@ -1,0 +1,114 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sales Invoice {{ invoice.invoice_no }}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	 <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Load jQuery first -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .invoice-header, .invoice-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .customer-info, .invoice-info {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .customer-info td, .invoice-info td {
+            padding: 5px;
+        }
+        .invoice-items {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice-items th, .invoice-items td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+		
+		@media print {
+			.footer {
+				display: none;
+			}
+		}
+    </style>
+</head>
+<body>
+    <div class="invoice-header">
+        <h1>Sales Invoice</h1>
+        <p>Invoice No: {{ invoice.invoice_no }}</p>
+        <p>Date: {{ invoice.date }}</p>
+    </div>
+
+    <table class="customer-info">
+        <tr>
+            <td><strong>Customer Name:</strong> {{ invoice.customer.name }}</td>
+            <td><strong>Phone:</strong> {{ invoice.customer.phone }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Address:</strong> {{ invoice.customer.address }}</td>
+        </tr>
+    </table>
+
+    <table class="invoice-items">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in invoice.items.all %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.rate }}</td>
+                <td>{{ item.total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="invoice-footer">
+        <p><strong>Total Amount:</strong> {{ total_amount }}</p>
+    </div>
+	
+	<!-- Print Button
+    <div class="print-button">
+        <button class="btn btn-primary" onclick="printInvoice()">Print Invoice</button>
+    </div>
+	 -->
+	 
+</body>
+
+<script>
+	function printInvoice() {
+		window.print();
+	}
+	
+	window.onload = function() {
+        window.print();
+    };
+</script>
+
+</html>
+
+
+
+
+{% endblock content %}
+

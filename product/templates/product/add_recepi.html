@@ -1,0 +1,159 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recepi Records</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery UI CSS -->
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+   
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <style>
+        .iframe-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        /* Custom CSS for dark black thead */
+        .table-dark thead th {
+            background-color: #000;
+            color: #fff;
+        }
+        /* Modal Custom Styles */
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            cursor: move; /* Indicate draggable header */
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding: 15px 20px;
+        }
+
+        .highlight-row {
+            background-color: #ffffcc !important;
+        }
+        /* Custom style for video modal */
+        .video-modal {
+            display: none;
+        }
+		
+		 .card-header {
+            background-color: #343a40;
+			text-align : center;			
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 1.25rem;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+		.thead-dark tr th {
+            vertical-align: top;
+        }
+    </style>
+	
+</head>
+
+<!-- Modal Trigger Button -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransactionModal">
+    Add recepi
+</button>
+
+<!-- Add Transaction Modal -->
+<div id="addTransactionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Recepi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm" method="post" action="{% url 'product:recepi_add' %}">
+                    {% csrf_token %}
+                        <!-- Form fields -->
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="comp_cd">Compound Code</label>
+								<select class="form-control" id="comp_cd" name="comp_cd">
+									<!-- Populate with Compounds -->
+									{% for compound in compounds %}
+										<option value="{{ compound.id }}" {% if form.comp_cd.value == compound.id %}selected{% endif %}>{{ compound.comp_cd }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="rm_cd">Raw Material Code</label>
+								<select class="form-control" id="rm_cd" name="rm_cd">
+									<!-- Populate with Raw Materials -->
+									{% for rawmat in rawmats %}
+									<option value="{{ rawmat.id }}">{{ rawmat.rm_cd }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<!-- The rm_des field (readonly) -->
+							<div class="form-group">
+								<label for="id_rm_des">Description</label>
+								<input type="text" class="form-control" id="id_rm_des" readonly>
+							</div>
+
+							<div class="form-group">
+								<label for="uom">UOM</label>
+								<input type="text" class="form-control" id="uom" name="uom" required>
+							</div>
+							<div class="form-group">
+								<label for="qty">Quantity</label>
+								<input type="number" class="form-control" id="qty" name="qty" step="0.01" required>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Save changes</button>
+						</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

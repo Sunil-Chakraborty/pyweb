@@ -1,11 +1,15 @@
 # views.py
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 
 def login_view(request):
+    # Log out any currently logged-in user
+    if request.user.is_authenticated:
+        logout(request)
+
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -17,8 +21,10 @@ def login_view(request):
                 return redirect('employee:home')  # Redirect to a success page.
     else:
         form = AuthenticationForm()
-    return render(request, 'accounts/login.html', {'form': form})
 
+    return render(request, 'accounts/login.html', {'form': form})
+    
+    
 def signup_view(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)

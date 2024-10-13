@@ -1,0 +1,92 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepi Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        table {
+            width: 60%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        @media print {
+            .page-break {
+                page-break-before: always;
+            }
+            .footer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="page-break"></div>
+    <div class="header">
+        <h3>Compound Recepi Report</h3>
+        <h5>Comp. Code: {{ compound_code }} | SAP Code: {{ sap_code }}</h5>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+			
+                <th style="width:90%;">R.M Bar Code</th>
+                
+                <th style="width:5%;">UOM</th>
+                <th style="width:5%;">Quantity</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>				
+				<td style="padding:0;"><img src="{{ row.bar_code }}" alt="Barcode" data-toggle="tooltip" data-placement="top" title="{{ row.rm_code }} - {{ row.description }}" /></td>  <!-- Display barcode image -->
+				
+				<td>{{ row.uom }}</td>
+				<td style="text-align:right;">{{ row.quantity }}</td>
+				
+			</tr>
+            {% endfor %}
+            <tr style="font-weight:bold;">                
+                <td></td>
+               
+                <td>Total</td>
+                <td style="text-align:right;">{{ total_qty }}</td>
+               
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+    </script>
+
+</body>
+</html>
+
+{% endblock content %}

@@ -12,12 +12,7 @@
             display: block;
             margin: 0 auto 10px auto;
             width: 100px;
-            border-radius: 20%;
-            background-color: white;
-            padding-top: 1px;
-            filter: sepia(1) hue-rotate(-30deg) saturate(5) brightness(1.2);
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 20%;           
         }
 
         .sidebar {
@@ -56,7 +51,13 @@
             text-align: center;
             margin-bottom: 20px;
         }
-
+		.dash-hdr {
+            padding: 0px;
+            height: 40px;            
+            color: blue;
+            text-align: center;
+            margin-bottom: 20px;
+        }
         .video-container {
             margin-top: 20px;
         }
@@ -72,10 +73,17 @@
     {% block content %}
 
     <div class="sidebar">
-        <a href="#"><img src="{% static 'image/Softnook.png' %}" alt="Softnook"></a>
-        <a href="{% url 'employee:show' %}">CRUD</a>
+        <!-- <a href="#"><img src="{% static 'image/Softnook.png' %}" alt="Softnook"></a> -->
+        <a href="#"><img src="{% static 'image/Ajanta_logo.png' %}" alt="Ajanta"></a>
+		
+		<a href="{% url 'employee:show' %}">CRUD</a>
         <a href="{% url 'files:home' %}">Files</a>
 		<a href="{% url 'files:file_listing' %}">View Content </a>
+		<a href="{% url 'transactions:transaction_list' %}">Transaction</a>
+		<a href="{% url 'product:recepi_list' %}">Product</a>
+		<a href="{% url 'product:mixprod_list' %}">Mixing</a>
+       		
+		
 		<!--<a href="https://raw.githack.com/Sunil-Chakraborty/softnook/master/Rct_Payment/rctpay.html">Receipts & Payments</a>-->
 		<a href="https://raw.githack.com/Sunil-Chakraborty/softnook/master/clock/clock.html">Analogue Clock</a>
 		
@@ -89,8 +97,12 @@
     <div class="main-content">
         <div class="dashboard-header">
             <h2>Dashboard</h2>
+			<br>
+			
         </div>
-		<h2>Welcome ! <br> {{ username }}</h2>
+		<div class="dash-hdr">
+		<h2 style="text-align:centre;">Welcome Demo Account ! </h2>
+		</div>
         <br>
         <div class="container">
             <!-- Cards Example 

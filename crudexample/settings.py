@@ -43,6 +43,11 @@ INSTALLED_APPS = [
     'accounts',
     'files',
     'photo_gallery',
+    'transactions',
+    'crispy_forms',    
+    'product',
+    'sales',
+    
 ]
 
 MIDDLEWARE = [
@@ -56,6 +61,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'crudexample.urls'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'  # or 'bootstrap5'
 
 TEMPLATES = [
     {
