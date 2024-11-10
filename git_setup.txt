@@ -134,6 +134,7 @@ Faculty git link
 https://github.com/dev-rathankumar/greatkart-course
 
 https://github.com/Sunil-Chakraborty/JU_CAS2
+https://github.com/Sunil-Chakraborty/pyweb
 
 
 D:\node_react\my-app>

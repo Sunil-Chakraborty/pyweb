@@ -1,0 +1,95 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- add_texture.html -->
+<head>
+    <meta charset="UTF-8">
+    <title>Add Texture to PDF</title>
+	
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+	<!-- Include Bootstrap JS and jQuery (if not already included) -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+	
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		
+	
+	<style>
+	/* Basic form styling */
+	form {
+		max-width: 600px;
+		margin: 0 auto;
+		padding: 20px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		background-color: #f9f9f9;
+	}
+
+	/* Styling for individual form fields */
+	.form-group {
+		margin-bottom: 20px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Styling the labels */
+	.form-group label {
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+
+	/* Style for file inputs */
+	input[type="file"], input[type="number"] {
+		padding: 8px;
+		margin: 5px 0;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+
+	/* Button styling */
+	button {
+		padding: 10px 15px;
+		background-color: #007bff;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+
+	button:hover {
+		background-color: #0056b3;
+	}
+
+	</style>
+
+</head>
+
+
+
+<form method="post" enctype="multipart/form-data">
+<h1>Add Texture to PDF</h1>
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="pdf_file">Choose PDF File</label>
+        {{ form.pdf_file }}
+    </div>
+
+    <div class="form-group">
+        <label for="texture_image">Choose Texture Image</label>
+        {{ form.texture_image }}
+    </div>
+
+    <div class="form-group">
+        <label for="opacity">Opacity</label>
+        {{ form.opacity }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Apply Texture and Download PDF</button>
+</form>
+{% endblock content %}

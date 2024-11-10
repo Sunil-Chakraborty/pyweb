@@ -21,3 +21,21 @@ class FileForm(forms.ModelForm):
             'url': forms.URLInput(attrs={'placeholder': 'Enter file URL', 'class': 'form-control'}),
             'directory': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+class PDFPasswordForm(forms.Form):
+    pdf_file = forms.FileField(label="Upload PDF")
+    password = forms.CharField(widget=forms.PasswordInput, label="Password")
+    
+
+
+class PDFWatermarkForm(forms.Form):
+    pdf_file = forms.FileField(label="Select PDF file")
+    watermark_text = forms.CharField(label="Watermark Text", max_length=100)
+    
+
+
+class PDFTextureForm(forms.Form):
+    pdf_file = forms.FileField(label="PDF File")
+    texture_image = forms.ImageField(label="Texture Image")
+    opacity = forms.FloatField(label="Opacity", initial=0.3, min_value=0, max_value=1)

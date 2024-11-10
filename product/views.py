@@ -30,6 +30,10 @@ import barcode
 from barcode.writer import ImageWriter
 from django.conf import settings
 
+import aiml
+
+
+
 # List View
 
 def recepi_list(request):
@@ -38,14 +42,27 @@ def recepi_list(request):
     
     rm_cds = RawMat.objects.all().order_by('rm_cd')
     
-    # Debugging - print all compound codes
-    #for comp in comp_cds:
-    #    print(f"Compound: {comp.comp_cd}, ID: {comp.id}")
+    pdf_directory = os.path.join(settings.MEDIA_ROOT, 'resources', 'pdf')
+    pdf_files = []
+
+    try:
+        # Generate full URLs for each file to use in the template
+        pdf_files = [
+            {
+                'name': f,
+                'url': os.path.join(settings.MEDIA_URL, 'resources', 'pdf', f)
+            }
+            #for f in os.listdir(pdf_directory) if f.endswith('.pdf')
+            for f in os.listdir(pdf_directory)
+        ]
+    except FileNotFoundError:
+        pass
         
     return render(request, 'product/recepi_list.html', {
     'recepis' : recepis,
     'comp_cds' : comp_cds,
-    'rm_cds'   : rm_cds, 
+    'rm_cds'   : rm_cds,
+    'pdf_files': pdf_files,    
     })
 
 # Add/Edit View
@@ -616,6 +633,7 @@ def mixprod_view(request, pk):
         'module_width': 0.2,  # Default is 0.2, you can reduce it for a finer barcode
         'module_height': 5,   # Adjust height
         'font_size': 0,       # Hide the text
+        'padding': 0,         # No Padding (if the library supports it)
         'dpi': 300,           # Increase the DPI for better quality        
         'write_text': False   # Don't write the text below the barcode
     }
@@ -656,3 +674,59 @@ def mixprod_view(request, pk):
     }
     
     return render(request, 'product/mixprod_detail.html', context)
+
+
+
+# Load AIML bot
+kernel = aiml.Kernel()
+kernel.learn("product/recepi_bot.aiml")  # Path to your AIML file
+
+def chatbot_view(request):
+    # Get user message from GET request
+    user_message = request.GET.get('message')
+    
+    # If no message is provided, set a default response
+    if not user_message:
+        bot_response = "Please type a message."
+    else:
+        # Check if message contains "Show me details of Recipe"
+        if "SHOW ME DETAILS OF RECIPE" in user_message.upper():
+            parts = user_message.split()
+            if len(parts) >= 5:  # Ensure the message has enough parts
+                recipe_code = parts[-1]
+                recepi_list = Recepi.objects.filter(card_no=recipe_code)
+
+                # If the recipe exists, format the response with details
+                if recepi_list.exists():
+                    bot_response = f"Recepi Card No: {recipe_code}\nDetails:\nR.M Code\tQuantity(Kg)\n"
+                    for recepi in recepi_list:
+                        bot_response += f"{recepi.rm_cd}\t\t{recepi.qty:.3f}\n"
+                else:
+                    bot_response = f"Recipe {recipe_code} not found."
+            else:
+                bot_response = "Please provide a valid recipe code."
+        else:
+            # Default AIML response if message doesn't match recipe pattern
+            bot_response = kernel.respond(user_message)
+
+    return render(request, 'product/chat.html', {'bot_response': bot_response})
+        
+        
+def pdf_list(request):
+    # Path to the PDF directory within the media folder
+    pdf_directory = os.path.join(settings.MEDIA_ROOT, 'resources', 'pdf')
+    pdf_files = []
+
+    try:
+        # Generate full URLs for each file to use in the template
+        pdf_files = [
+            {
+                'name': f,
+                'url': os.path.join(settings.MEDIA_URL, 'resources', 'pdf', f)
+            }
+            for f in os.listdir(pdf_directory) if f.endswith('.pdf')
+        ]
+    except FileNotFoundError:
+        pass
+
+    return render(request, 'product/pdf_dropdown.html', {'pdf_files': pdf_files})

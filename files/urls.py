@@ -14,4 +14,10 @@ urlpatterns = [
     path('delete_file/<int:pk>/', views.delete_file, name='delete_file'),
     path('files/listing/', views.file_listing, name='file_listing'),   
     path('edit_file/<int:file_id>/', views.edit_file, name='edit_file'),
+    path('add-pdf-password/', views.add_pdf_password_view, name='add_pdf_password'),
+    path('add-watermark/', views.add_watermark_view, name='add_watermark'),
+    path('add-texture/', views.add_texture_view, name='add_texture'),
+    path('download-pdf/<str:filename>/', views.download_pdf_view, name='download_pdf'),
+    
+    
 ]

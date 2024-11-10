@@ -66,6 +66,32 @@
             width: 100%;
             height: 315px; /* You can adjust the height as needed */
         }
+		
+		.sidebar h4 {
+			font-size: 1.2em;
+			margin-bottom: 10px;
+		}
+
+		.sidebar ul {
+			list-style-type: none;
+			padding-left: 0;
+		}
+
+		.sidebar ul li {
+			margin-bottom: 8px;
+		}
+
+		.sidebar ul li a {
+			color: #333;
+			text-decoration: none;
+		}
+
+		.sidebar ul li a:hover {
+			text-decoration: underline;
+		}
+				
+		
+		
     </style>
 {% endblock %}
 
@@ -82,7 +108,16 @@
 		<a href="{% url 'transactions:transaction_list' %}">Transaction</a>
 		<a href="{% url 'product:recepi_list' %}">Product</a>
 		<a href="{% url 'product:mixprod_list' %}">Mixing</a>
-       		
+		
+		<h4 style="margin-left:10px; border-bottom: 1px solid #333; padding-bottom: 5px;">PDF Orientation</h4>
+		
+		<ul>
+			<li><a href="{% url 'files:add_pdf_password' %}">Password</a></li>
+			<li><a href="{% url 'files:add_watermark' %}">Watermark</a></li>
+			<li><a href="{% url 'files:add_texture' %}">Texture</a></li>
+		</ul>
+		
+		
 		
 		<!--<a href="https://raw.githack.com/Sunil-Chakraborty/softnook/master/Rct_Payment/rctpay.html">Receipts & Payments</a>-->
 		<a href="https://raw.githack.com/Sunil-Chakraborty/softnook/master/clock/clock.html">Analogue Clock</a>

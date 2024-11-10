@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <title>{% block title %}My Web Application{% endblock %}</title>
+    <title>{% block title %}My Local Web Application{% endblock %}</title>
     
     {% block styles %}
     <!-- Custom styles can be added here -->
@@ -37,7 +37,15 @@
 				<li class="nav-item">
                     <a class="nav-link" href="{% url 'product:recepi_list' %}">Product</a>
                 </li>
-				
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'files:add_pdf_password' %}">Add PDF pwd</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'files:add_watermark' %}">Add Warer Mark</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'files:add_texture' %}">Add Texture</a>
+				</li>
 				<li class="nav-item">
                     <a class="nav-link" href="{% url 'product:generate_labels' %}">Label Print</a>
                 </li>
@@ -47,7 +55,9 @@
 				<li class="nav-item">
                     <a class="nav-link" href="{% url 'product:mixprod_list' %}">Mixing</a>
                 </li>
-
+				<li class="nav-item">
+                    <a class="nav-link" href="{% url 'product:chatbot' %}">ChatBot</a>
+                </li>
 				<li class="nav-item">
                     <a class="nav-link" href="{% url 'sales:sales_invoice_print' invoice_no='INV0002' %}">Invoice Print INV0002</a>
                 </li>

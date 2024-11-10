@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.conf.urls.static import static
+
 from django.urls import path
 from .import views
 
@@ -21,5 +24,12 @@ urlpatterns = [
     path('mixprod/edit/<int:pk>/', views.mixprod_edit, name='mixprod_edit'),
     path('mixprod/delete/<int:pk>/', views.mixprod_delete, name='mixprod_delete'),
     path('mixprod/view/<int:pk>/', views.mixprod_view, name='mixprod_view'),
+    
+    path('chatbot/', views.chatbot_view, name='chatbot'),
+    
+    path('pdf-list/', views.pdf_list, name='pdf_list'),
+    
+]
 
-] 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

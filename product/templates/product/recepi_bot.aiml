@@ -1,0 +1,4 @@
+<category>
+    <pattern>SHOW ME DETAILS OF RECIPE *</pattern>
+    <template>Fetching details for Recipe <star/></template>
+</category>

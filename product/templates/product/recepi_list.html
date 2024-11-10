@@ -21,6 +21,24 @@
 
 	
     <style>
+		#pdf-list {
+            display: none;
+            margin-top: 10px;
+        }
+		/* Styles for the button */
+        .toggle-button {
+            padding: 10px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        .button-available {
+            background-color: green;
+        }
+        .button-unavailable {
+            background-color: grey;
+            cursor: not-allowed;
+        }
 		input[type=number]::-webkit-inner-spin-button,
 		input[type=number]::-webkit-outer-spin-button {
 			   -webkit-appearance: none;
@@ -106,6 +124,9 @@
 <br>
 <div class="container">
 
+	<!-- <a href="{{ MEDIA_URL }}pdf/types.pdf">Download PDF</a> -->
+
+	
 	<h2>Recepi List
 
 	<button style="float:right;margin-left:5px;" id="generatePdfBtn" class="btn btn-primary">Print</button>
@@ -166,6 +187,25 @@
 	<p style="font-weight:bold;">Total Qty: <span id="totalQty">0</span> Amount: <span id="totalAmt">0</span>
 	   Rate: <span id="rate">0</span>
 	</p>
+		
+	<!-- <a href="{% url 'product:pdf_list' %}">Download PDF</a> -->
+	
+	
+    <!-- Toggle button for PDF list with conditional styling -->
+    <h3>
+        {% if pdf_files %}
+            <button onclick="togglePdfList()" class="toggle-button button-available">Available PDFs</button>
+        {% else %}
+            <button class="toggle-button button-unavailable" disabled>Available PDFs</button>
+        {% endif %}
+    </h3>
+    
+    <!-- PDF list with toggle functionality -->
+    <ul id="pdf-list">
+        {% for file in pdf_files %}
+            <li><a href="{{ file.url }}" target="_blank">{{ file.name }}</a></li>
+        {% endfor %}
+    </ul>
 	
 	<!-- The report container where the report will be displayed -->
     <div id="reportContainer"></div>
@@ -513,7 +553,7 @@
 			});
 
 			// Update the summary element
-			$('#totalQty').text(total.toFixed(2));
+			$('#totalQty').text(total.toFixed(3));
 			$('#totalAmt').text(amount.toFixed(2));
 			rate = amount/total;
 			$('#rate').text(rate.toFixed(2));
@@ -664,6 +704,16 @@
 		});
 
 	
+        // JavaScript function to toggle the visibility of the PDF list
+        function togglePdfList() {
+            const pdfList = document.getElementById('pdf-list');
+            if (pdfList.style.display === 'none') {
+                pdfList.style.display = 'block';
+            } else {
+                pdfList.style.display = 'none';
+            }
+        }
+    
 	</script>
 
 </body>

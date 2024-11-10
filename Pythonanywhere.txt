@@ -1,6 +1,11 @@
 
 Pythonanywhere - Webhosting
-https://sunilc.pythonanywhere.com
+https://sunilc.pythonanywhere.com/accounts/login/
+user:sunil@gmail.com
+pwd:sunil123
+bash console:
+cd CRUD
+source myenv/bin/activate
 
 https://www.pythonanywhere.com/login/
 https://github.com/Sunil-Chakraborty/CRUD.git
@@ -21,11 +26,26 @@ sunilc.pythonanywhere.com.
 python --version 3.8.10
 django-admin --version 4.10
 
-
+do you recomend the following site to enroll for learning of AI tools for Python using AI
+https://pay.aifortechies.in/checkout/at01-ga1?utm_campaign=21802681914&utm_term=&utm_content=&utm_id=21802681914&gad_source=1&gclid=CjwKCAjwpbi4BhByEiwAMC8JnTOJG5fpZ0e_Eevre22dreeOZDcvs5nRDLkSUrlXLRZvorG5A62xmhoC-lEQAvD_BwE
 
 user name : sayantani
 pwd : Hiitsme!1
 sayantani.pythonanywhere.com
+
+http://127.0.0.1:8000/teachers/
+user:skc
+pwd:skc123
+
+https://sayantani.pythonanywhere.com/teachers/
+user:sunil
+pwd:sunil123
+
+https://sayantani.pythonanywhere.com/admin/
+user:admin
+pwd:admin123
+
+
 /home/sayantani/venv
 python3.8 -m venv venv
 source venv/bin/activate

@@ -1,3 +1,5 @@
+import re
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import EmployeeForm
 from .models import Employee
@@ -6,6 +8,7 @@ from django.db.models  import Q
 from .filters import EmployeeFilter
 from .utils import render_to_pdf
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 # Create your views here.
@@ -19,19 +22,22 @@ def dashboard(request):
     }
     return render(request, 'employee/Dashboard.html', context)
 
+
 def emp(request):
     if request.method == "POST":
         form = EmployeeForm(request.POST, request.FILES)
+        
         if form.is_valid():
-            try:
-                form.save()
-                return redirect('employee:show')
-            except:
-                pass
+            form.save()
+            messages.success(request, "Record saved successfully for {employee.ename}!")
+            return redirect('employee:show')
+    
     else:
         form = EmployeeForm()
-    return render(request,'employee/index.html',{'form':form})
 
+    return render(request, 'employee/index.html', {'form': form})
+    
+    
 def show(request):
     employees = Employee.objects.all().order_by('id')
     paginator = Paginator(employees,2)

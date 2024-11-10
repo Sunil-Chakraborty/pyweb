@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <title>{% block title %}My Web Application{% endblock %}</title>
+    <title>{% block title %}My Local Web Application{% endblock %}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     {% block styles %}
@@ -32,6 +32,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'files:home' %}">Files</a>
                 </li>
+				<li class="nav-item">
+                    <a class="nav-link" href="{% url 'files:add_pdf_password' %}">Add PDF pwd</a>
+                </li>
+				
 				<li class="nav-item">
                     <a class="nav-link" href="{% url 'files:file_listing' %}">View Content</a>
                 </li>

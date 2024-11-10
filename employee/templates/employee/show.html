@@ -32,6 +32,13 @@
         </div>
     </form>
     <br>
+	{% if messages %}
+		<div>
+			{% for message in messages %}
+				<div class="alert alert-success">{{ message }}</div>
+			{% endfor %}
+		</div>
+	{% endif %}
     <caption class="font-weight-bold">List of Employees</caption>
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-sm">

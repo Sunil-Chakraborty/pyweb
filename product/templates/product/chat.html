@@ -1,0 +1,11 @@
+
+{% load static %}
+
+<form method="GET" action="{% url 'product:chatbot' %}">
+    <div class="input-group">
+        <input type="text" name="message" placeholder="Ask me anything..." class="form-control">
+        <button type="submit" >
+            send
+        </button>
+    </div>
+</form>
