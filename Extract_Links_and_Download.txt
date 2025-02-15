@@ -1,0 +1,39 @@
+URL driven menu :
+
+Extract links from PDF and download files.
+
+Menu in Production : PDF extract , PDF download
+extracted files are in media\extracted_links
+pdf files are in pyweb\download folder
+
+
+Downloading Files from PDF irrespective of Google Drive Files: viz. NAAC.pdf(SSR)/CAS.PDF
+two steps actions: 
+
+a) Extract File links:
+Source :
+D:\PyWeb\product\management\commands\extract_links.py
+
+How to Run: using class Command(BaseCommand):
+python manage.py extract_links D:\PyWeb\NAAC-12-15.pdf D:\PyWeb\Extracted
+
+What This Does:
+Extracts all links from the PDF
+Prints found links per page.
+Saves links to D:\PyWeb\Extracted\extracted_links.txt for further use.
+
+b) Downloading programmatically:
+How to Run:
+cd D:\PyWeb
+venv\Scripts\activate
+python download_links.py
+
+Direct downloading Files from PDF kept in public Google Drive : (CAS.PDF)
+source :
+D:\PyWeb\product\management\commands\extract_and_download.py
+
+How to Run: using class Command(BaseCommand):
+
+python manage.py extract_and_download D:\PyWeb\cas1.pdf D:\PyWeb\Downloads
+
+

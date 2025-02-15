@@ -1,0 +1,33 @@
+
+Role of "Referer" in HEADERS:
+
+The Referer header in HTTP requests tells the server where the request is coming from. 
+Some websites require a proper Referer to prevent direct access to files.
+
+Example: If a file is meant to be accessed only after logging in, 
+but the request comes directly from an unknown source, 
+the server might return 403 Forbidden.
+
+Best Approach
+Default Referer (Google)
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Referer": "https://www.google.com",  # Pretend the request comes from Google search
+    "Accept": "*/*",
+    "Connection": "keep-alive"
+}
+
+If 403 Forbidden Still Occurs, Use the Exact Site
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Referer": "https://assessmentonline.naac.gov.in/",  # Directly from the site
+    "Accept": "*/*",
+    "Connection": "keep-alive"
+}
+
+Extra Tip: Checking Referer Requirements
+1 ️⃣  Open Developer Tools (F12) in Chrome
+2 ️⃣  Go to Network > Find the file you’re downloading
+3 ️⃣  Check the Request Headers to see what Referer was used
+4 ️⃣  Copy the Referer and add it to HEADERS
+

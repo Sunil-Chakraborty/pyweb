@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Links File</title>
+</head>
+<body>
+    <h2>Upload Extracted Links</h2>
+    <form id="uploadForm" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="links_file" required>
+        <button type="submit">Upload & Download</button>
+    </form>
+    
+    <h3>Download Status:</h3>
+    <ul id="downloadList"></ul>
+
+    <script>
+        document.getElementById("uploadForm").onsubmit = async function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+
+            let response = await fetch("{% url 'product:upload_links' %}", {
+                method: "POST",
+                body: formData
+            });
+
+            let result = await response.json();
+            if (result.status === "success") {
+                let list = document.getElementById("downloadList");
+                list.innerHTML = "";
+                result.downloaded_files.forEach(file => {
+                    let li = document.createElement("li");
+                    li.textContent = file;
+                    list.appendChild(li);
+                });
+            }
+        };
+    </script>
+</body>
+</html>

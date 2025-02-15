@@ -12,7 +12,7 @@
 
     <h3>Available PDFs:</h3>
     <ul>
-        {% for file in pdf_files %}
+        {% for file in pdf_files|dictsort:"name" %}
             <li><a href="{{ file.url }}" target="_blank">{{ file.name }}</a></li>
         {% endfor %}
     </ul>

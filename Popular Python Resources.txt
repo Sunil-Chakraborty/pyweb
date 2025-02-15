@@ -1,0 +1,16 @@
+Popular Python Resources:
+
+a) Reading :
+1. Python Tutorial : https://www.w3schools.com/python/
+
+2. GeeksforGeeks: https://www.geeksforgeeks.org/python-programming-language-tutorial/
+
+3. TutorialsPoint : https://www.tutorialspoint.com/python/index.htm
+
+b) Testing your skill :
+1. HackerRank : https://www.hackerrank.com/domains/python
+2. Leetcode - https://leetcode.com/problemset/
+3. CodeChef - https://www.codechef.com/
+
+c) Watching -- Youtube
+1. TheNewBoston : 

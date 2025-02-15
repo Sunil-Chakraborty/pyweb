@@ -29,6 +29,8 @@ urlpatterns = [
     
     path('pdf-list/', views.pdf_list, name='pdf_list'),
     
+    path('upload/', views.upload_pdf_extract_links, name='upload_pdf_extract_links'),
+    path('upload-links/', views.upload_links_and_download, name='upload_links'),
 ]
 
 if settings.DEBUG:
