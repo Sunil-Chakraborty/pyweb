@@ -745,21 +745,21 @@ def pdf_list(request):
     return render(request, 'product/pdf_dropdown.html', {'pdf_files': pdf_files})
 
 def extract_links_from_pdf(pdf_path):
-    """Extracts all unique links from a PDF file along with their page numbers."""
+    """Extracts all unique links from a PDF file."""
     doc = fitz.open(pdf_path)
-    link_data = []  # Store links with page numbers
-
-    for page_num, page in enumerate(doc, start=1):  # Page numbers start from 1
+    all_links = set()  # Use a set to store unique links
+    
+    for page in doc:
         for link in page.get_links():
             uri = link.get("uri", "")
             if uri:
-                link_data.append((page_num, uri))  # Store (page number, link)
+                all_links.add(uri)  # Sets automatically remove duplicates
     
-    return link_data
-
-
+    return list(all_links)  # Convert back to a list before returning
+    
+    
 def upload_pdf_extract_links(request):
-    """Handles PDF file upload, extracts links with page numbers, and saves the results dynamically."""
+    """Handles PDF file upload, extracts links, and saves the results dynamically."""
     if request.method == "POST" and request.FILES.get("pdf_file"):
         pdf_file = request.FILES["pdf_file"]
         save_dir = os.path.join(settings.MEDIA_ROOT, "extracted_links")
@@ -769,24 +769,23 @@ def upload_pdf_extract_links(request):
         file_path = os.path.join(save_dir, pdf_file.name)
         file_name = default_storage.save(file_path, ContentFile(pdf_file.read()))
         
-        # Extract links with page numbers
+        # Extract links
         extracted_links = extract_links_from_pdf(default_storage.path(file_name))
         
-        # Save extracted links to a text file with page numbers
+        # Save extracted links to a text file
         links_file_path = os.path.join(save_dir, f"{pdf_file.name}_links.txt")
         with open(links_file_path, "w") as f:
-            for page_num, link in extracted_links:
-                f.write(f"Page {page_num}: {link}\n")  # Include page number
+            for link in extracted_links:
+                f.write(link + "\n")
         
         return JsonResponse({
             "message": "Links extracted successfully",
-            "links": extracted_links,  # List of (page, link)
+            "links": extracted_links,
             "saved_file": links_file_path,
         })
     
     return render(request, "product/upload_pdf.html")
-    
-    
+   
 # Downloading file following extract_link.txt
  
 # Disable SSL warnings (Optional, but recommended for production)
